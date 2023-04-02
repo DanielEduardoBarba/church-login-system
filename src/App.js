@@ -1,23 +1,19 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import Login from './scenes/Login';
+import ChildList from './scenes/ChildList';
 import './App.css';
 
 function App() {
+  const [userID, setUserID] = useState("8JpiRBUYNuOUQ6IZniHuR1iE5Ao2")
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="whole-page">
+      {
+        !userID
+          ?<Login setUserID={setUserID}/>
+          :<ChildList userID={userID} setUserID={setUserID}/>
+      }
+      
     </div>
   );
 }
