@@ -10,6 +10,9 @@ export default function Login({setUserID}) {
         const [phone,setPhone]=useState("")
         const [password,setPassword]=useState("")
 
+        const [error,setError]=useState("OK")
+
+
         const [isUser,setIsUser]=useState(false)
         
 
@@ -25,8 +28,12 @@ export default function Login({setUserID}) {
 
         signInWithEmailAndPassword(auth,email, password)
         .then(_user=>{
-            setUserID(_user.user.uid)
-            console.log(_user)
+            //setUserID(_user.user.uid)
+            console.log("KAOKAOKAOKA")
+        })
+        .catch(e=>{
+            console.error(e)
+             setError(`Password or ${email?"email":"phone"} is not valid!`)
         })
 
     }
@@ -64,6 +71,7 @@ export default function Login({setUserID}) {
 
             <form id="login-form" className="login-form" onSubmit={e=>isUser?loginUser(e):checkUser(e)}>
 
+                {error?<p>{error}</p>:"" }
                 <label>Email</label>
 
                 <input name="email" id="email" placeholder="Email" 

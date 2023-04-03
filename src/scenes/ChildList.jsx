@@ -1,34 +1,42 @@
 import { useState, useEffect } from "react"
 import { API_URL } from "../resources"
 import Child from "../components/Child"
+import NewChildModal from "../components/NewChildModal"
+import DeleteModal from "../components/DeleteModal"
 
 
 export default function ChildList({userID, setUserID}){
     const [children, setChildren] = useState("")
-    const [selected, setSelected] = useState("")
+    const [IDs, setIDs] = useState("")
+    const [names, setNames] = useState("")
+
     const [showOptions, setShowOptions] = useState(false)
+
+    const [modal, setModal] = useState(0)
 
     useEffect(()=>{
 
-        setSelected([])
-        console.log("WHAT IS SELECTED: ", selected)
+        setIDs([])
+        setNames([])
+        //console.log("WHAT IS SELECTED: ", selected)
 
         fetch(`${API_URL}/children/${userID}`)
         .then(incoming=>incoming.json())
         .then(response=>{
             setChildren(response)
-            console.log(response)
+            //console.log(response)
         })
         .catch(console.error)
 
 
-    },[])
+    },[ modal])
+
     useEffect(()=>{
-        console.log("OKAY", selected.length)
-        if(selected.length>0)setShowOptions(true)
+        //console.log("OKAY", selected.length)
+        if(IDs.length>0)setShowOptions(true)
         else setShowOptions(false)
 
-    },[selected])
+    },[IDs])
 
 
     const signIn = () =>{
@@ -38,10 +46,11 @@ export default function ChildList({userID, setUserID}){
             headers:{
                 "Content-Type":"application/json"
             },
-            body: JSON.stringify(selected)
+            body: JSON.stringify(IDs)
         })
         .then(incoming=>incoming.json())
         .then(response=>{
+            //run print job
             console.log(response)
         })
         .catch(console.error)
@@ -57,23 +66,37 @@ export default function ChildList({userID, setUserID}){
                 <p>Name</p>
                 <p>Birthday</p>
                 <p>Alergies</p>
-                <p>ID</p>
             </div>
 
         {
             children
-                ?children.map(child=><Child key={child._id} child={child} selected={selected} setSelected={setSelected}/>)
+                ?children.map(child=><Child key={child._id} child={child} IDs={IDs} setIDs={setIDs} names={names} setNames={setNames} />)
                 :""
         }
 
-       {
-        showOptions
-         ?<button onClick={signIn}>Sign In Children</button>
-         :""
-       } 
-        <button onClick={signIn}>Exit</button>
+       <button onClick={signIn}>SIGN IN</button>
+       <button onClick={()=>setModal(1)}>ADD</button>
+       <button onClick={()=>{
+        setModal(2)
+        console.log(IDs)
+        console.log(names)
+       }}>DELETE</button>
+         
+        <button onClick={()=>{
+            setIDs("")
+            setNames("")
+            setUserID("")
+        }}>Exit</button>
 
         </div>
+{
+    modal==1
+        ?<NewChildModal userID={userID} setModal={setModal}/>
+        :modal==2
+            ?<DeleteModal IDs={IDs} names={names} setModal={setModal}/>
+            :""
+}
+
 
         </>
     )

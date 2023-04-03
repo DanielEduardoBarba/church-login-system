@@ -1,28 +1,41 @@
 import { useState } from "react"
 
 
-export default function Child({ child, selected, setSelected }){
+export default function Child({ child, IDs, setIDs, names, setNames }){
     const [isSelected, setIsSelected] =useState(false)
     const {_id,name,dob,allergies} = child
 
     const toggleSelect = ()=>{
+        
+        
+        if(!IDs.includes(_id)){
+            IDs.push(_id)
+            setIDs(IDs)
             
-        if(!selected.includes(_id)){
-            selected.push(_id)
-            setSelected(selected)
+            names.push(name)
+            setNames(names)
+
             setIsSelected(true)
+            
             //document.getElementById("child").style.backgroundColor="grey"
         }
         else{
-            let newList = []
-            for(let i=0;i<selected.length;i++){
-                if(selected[i]!=_id)newList.push(selected[i])
+            let newIDs = []
+            let newNames = []
+            for(let i=0;i<IDs.length;i++){
+                if(IDs[i]!=_id){
+                    newIDs.push(IDs[i])
+                    newNames.push(names[i])
+                }
             }
-            setSelected(newList)
+            setIDs(newIDs)
+            setNames(newNames)
+            
             setIsSelected(false)
-           // document.getElementById("child").style.backgroundColor="white"
+            // document.getElementById("child").style.backgroundColor="white"
         }
-       
+        console.log(IDs,"Comparing",names)
+        
     }
 
     return(
@@ -39,8 +52,8 @@ export default function Child({ child, selected, setSelected }){
             >
                 <p>{name}</p>
                 <p>{dob}</p>
-                <p>{allergies}</p>
-                <p>{_id}</p>
+                <p>{allergies?allergies:"-none-"}</p>
+                {/* <p>{_id}</p> */}
 
                 {/* <button 
                 id="child-btn"
