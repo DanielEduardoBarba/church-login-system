@@ -4,7 +4,7 @@ import ChildList from './scenes/ChildList';
 import './App.css';
 
 function App() {
-  const [userID, setUserID] = useState("8JpiRBUYNuOUQ6IZniHuR1iE5Ao2")
+  const [userID, setUserID] = useState("")
   
   return (
     <div className="whole-page">
