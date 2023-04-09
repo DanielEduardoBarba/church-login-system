@@ -27,7 +27,8 @@
 .login-form>* {
     border-radius: 2vw;
     padding: 2vw;
-    margin: 3vw;
+    margin: 1vw;
+    font-size: 20px;
 }
 
 .child-list {
