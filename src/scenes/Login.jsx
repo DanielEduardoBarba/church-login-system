@@ -58,10 +58,11 @@ export default function Login({setUserID}) {
        .then(methods=>{
         console.log("METHODS ", methods.length)
         if(methods.length>0){
-            console.log("REAYD TO LOG IN")
+            console.log("READY TO LOG IN")
             setIsUser(1)
         }
         else{
+            console.log("NEED TO REGISTER")
             setIsUser(-1)
         }
        })
@@ -82,9 +83,14 @@ export default function Login({setUserID}) {
         createUserWithEmailAndPassword(auth, email, password)
         .then(_user=>{
             setUserID(_user.user.uid)
-            //console.log("KAOKAOKAOKA")
+            
         })
-        .catch(console.error)
+        .catch(e=>{
+            console.log(typeof e)
+            console.log(String(e))
+            setError(String(e))
+           // setError(e)
+        })
     }
 
     return (
@@ -100,7 +106,7 @@ export default function Login({setUserID}) {
                             :""  
                          }>
 
-                {error?<p>{error}</p>:"" }
+               
                 <label>Email</label>
 
                 <input name="email" id="email" placeholder="Email" 
@@ -148,6 +154,7 @@ export default function Login({setUserID}) {
                     }} />
                     :""
                 }
+                 {error?<p>{error}</p>:"" }
                 <button>{ 
                          isUser==1
                             ?"Login"
